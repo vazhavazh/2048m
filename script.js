@@ -53,7 +53,7 @@ async function handleInput(event) {
 
     if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
         await newTile.waitForAnimationEnd();
-        alert("Vazha won, and you lost =))))")
+        alert("Важа выиграл, а ты проиграл =))))")
         return
     }
     setupInputOnce();
