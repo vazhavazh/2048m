@@ -50,7 +50,16 @@ async function handleInput(event) {
     const newTile = new Tile(gameBoard);
     grid.getRandomEmptyCell().linkTile(newTile);
     setupInputOnce();
+
+    if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()) {
+        await newTile.waitForAnimationEnd();
+        alert("Vazha won, and you lost =))))")
+        return
+    }
+    setupInputOnce();
 }
+
+
 
 
 async function moveUp() {
