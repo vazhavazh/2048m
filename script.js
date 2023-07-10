@@ -4,10 +4,6 @@ import { Tile } from "./tile.js";
 const gameBoard = document.getElementById("game-board");
 
 
-gameBoard.addEventListener('touchstart', handleTouchStart);
-
-
-
 
 const grid = new Grid(gameBoard);
 
@@ -16,12 +12,12 @@ setupInputOnce();
 
 function setupInputOnce() {
     window.addEventListener("keydown", handleInput, { once: true })
-
+    gameBoard.addEventListener('touchstart', handleTouchStart, { once: true });
+    gameBoard.addEventListener('touchmove', handleTouchMove, { once: true });
+    gameBoard.addEventListener('touchend', handleTouchEnd, { once: true });
 }
-
-function handleTouchStart(event) {
-    console.log(event)
-}
+let startX = 0;
+let startY = 0;
 
 async function handleInput(event) {
     switch (event.key) {
@@ -67,11 +63,58 @@ async function handleInput(event) {
         alert("Важа выиграл, а ты проиграл =))))")
         return
     }
+
+
+    
+
     setupInputOnce();
 }
 
 
+function handleTouchStart(event) {
+    const touch = event.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+}
 
+function handleTouchMove(event) {
+    event.preventDefault();
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        if (deltaX > 0) {
+            // Перемещение вправо
+            if (canMoveRight()) {
+                moveRight();
+            }
+        } else {
+            // Перемещение влево
+            if (canMoveLeft()) {
+                moveLeft();
+            }
+        }
+    } else {
+        if (deltaY > 0) {
+            // Перемещение вниз
+            if (canMoveDown()) {
+                moveDown();
+            }
+        } else {
+            // Перемещение вверх
+            if (canMoveUp()) {
+                moveUp();
+            }
+        }
+    }
+}
+
+function handleTouchEnd(event) {
+    startX = 0;
+    startY = 0;
+    setupInputOnce();
+}
 
 async function moveUp() {
     await slideTiles(grid.cellsGroupedByColumn);
