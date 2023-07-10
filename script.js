@@ -3,8 +3,7 @@ import { Tile } from "./tile.js";
 
 const gameBoard = document.getElementById("game-board");
 gameBoard.addEventListener('touchstart', handleTouchStart);
-gameBoard.addEventListener('touchmove', handleTouchMove);
-gameBoard.addEventListener('touchend', handleTouchEnd);
+
 const grid = new Grid(gameBoard);
 
 grid.getRandomEmptyCell().linkTile(new Tile(gameBoard));
